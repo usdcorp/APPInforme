@@ -4,9 +4,9 @@
     "slug": "APPInforme",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/img/logoa.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/img/fondostart.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
