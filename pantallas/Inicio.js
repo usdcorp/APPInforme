@@ -12,8 +12,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { CredentialsContext } from "./../components/CredentialsContext";
 
-const Inicio = ({ navigation }) => {
+const Inicio = ({ navigation, route }) => {
   
+  const {Observacion, BusinessPartner} = route.parm
   return (
 
     <View style={styles.container}>

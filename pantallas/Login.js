@@ -20,7 +20,7 @@ const Login = ({ navigation }) => {
   const [isSecuryEntry, setIsSecureEntry] = useState(true);
   const [Usuario, setUsuario] = useState("");
   const [Password, setPassword] = useState("");
-  
+
   const signin = async () => {
     if (Usuario != "" && Password != "") {
       await fetch("http://119.8.144.182:1035/api/businesspartneraccess", {
@@ -37,10 +37,8 @@ const Login = ({ navigation }) => {
         .then((res) => res.json())
         .then((resData) => {
           if (resData.Observacion == "OK") {
-
             handleToast("BIENVENIDO:  " + resData.BusinessPartner);
-
-            navigation.navigate("Inicio");
+            navigation.navigate('Inicio', {...resData[0] });
           } else {
             handleToast(resData.Observacion);
           }
