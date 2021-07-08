@@ -1,163 +1,215 @@
-import React, {Component, useState} from "react";
-import {
-    View,
-    Text,
-    TextInput,
-    Dimensions,
-    TouchableOpacity,
-    Keyboard,
-    SafeAreaView,
-    ToastAndroid,
-    ImageBackground,
-    StyleSheet,
-    Image,
-    
-
-} from "react-native";
-import  {Ionicons} from "@expo/vector-icons"
-import { AsyncStorage } from "@react-native-async-storage/async-storage";
-import {logo} from "../assets/img/alphablanco.png";
+import React, { Component, useState, useContext } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width: WIDTH } = Dimensions.get("window");
+import COLORES from "../src/utils/Colores";
+import { credentialsContext } from "./../components/Context";
 
-const App =({ navigation }) => {
-    const [isSecuryEntry, setIsSecureEntry] = useState(true);
-    const [Usuario, setUsuario] = useState("");
-    const [Password, setPassword] = useState("");
+import {
+  View,
+  TextInput,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  Text,
+  ToastAndroid,
+} from "react-native";
 
-    const signin = async () => {
-      navigation.navigate("Inicio");
+const Login = ({ navigation }) => {
+  const [isSecuryEntry, setIsSecureEntry] = useState(true);
+  const [Usuario, setUsuario] = useState("");
+  const [Password, setPassword] = useState("");
+  
+  const [storedCredentials, setstoredCredentials ] = useContext(credentialsContext)
 
-        // if (Usuario != "" && Password != "") {
-        //   await fetch("http://119.8.144.182:1035/api/loginfirma/", {
-        //     method: "POST",
-        //     headers: {
-        //       Accept: "application/json",
-        //       "Content-type": "application/json",
-        //     },
-        //     body: JSON.stringify({
-        //       Usuario: Usuario,
-        //       Password: Password,
-        //     }),
-        //   })
-        //     .then((res) => res.json())
-        //     .then((resData) => {
-        //         AsyncStorage.setItem('Usuario', resData.wsdUsuario.NombreCompleto);
-        //       ToastAndroid.showWithGravity(
-        //         "Bienvenido " + resData.wsdUsuario.NombreCompleto,
-        //         ToastAndroid.SHORT,
-        //         ToastAndroid.BOTTOM
-        //       );
-        //       navigation.navigate("Inicio");
-        //     })
-        //     .catch((error) => {
-        //       ToastAndroid.showWithGravity(
-        //         "User Name/Password incorrect",
-        //         ToastAndroid.SHORT,
-        //         ToastAndroid.BOTTOM
-        //       );
-        //     });
-        // } else {
-        //   ToastAndroid.showWithGravity(
-        //     "Campos vacios",
-        //     ToastAndroid.SHORT,
-        //     ToastAndroid.BOTTOM
-        //   );
-        // }
-    };
+  const signin = async () => {
+    if (Usuario != "" && Password != "") {
+      await fetch("http://119.8.144.182:1035/api/businesspartneraccess", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          UserName: Usuario,
+          UserPassw: Password,
+        }),
+      })
+        .then((res) => res.json())
+        .then((resData) => {
+          if (resData.Observacion == "OK") {
 
-    return (
-        <ImageBackground  style={styles.simgbackground}>
-     
-          <View style={styles.scontainer}>
-            <TextInput
-              value={Usuario}
-              onChangeText={(anything) => setUsuario(anything)}
-              style={styles.sinput}
-              placeholder={"user name"}
-              placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
-              underlineColorAndroid="transparent"
+            handleToast("BIENVENIDO:  " + resData.BusinessPartner);
+
+            navigation.navigate("Inicio");
+          } else {
+            handleToast(resData.Observacion);
+          }
+        })
+        .catch((error) => {
+          handleToast("Intente de nuevo por favor!");
+        });
+    } else {
+      handleToast("Campos vacios");
+    }
+  };
+
+  let credenciales= ['nandito', '123'];
+  persistLogin(credenciales);
+
+  const persistLogin = async (credentials) =>{
+    await AsyncStorage.setItem('BusinessPartnerCredentials', JSON.stringify(credentials))
+    .then(()=>{
+      setstoredCredentials(credentials);
+    })
+    .catch((error) => {
+      console.log(error);
+      handleToast("Error al guardar los credenciales")
+    })
+  }
+
+  const handleToast = (message) => {
+    ToastAndroid.showWithGravity(
+      message,
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM
+    );
+  };
+
+  return (
+    <View
+      style={{
+        backgroundColor: COLORES.ORANGE,
+        flex: 1,
+      }}
+    >
+      <View
+        style={{
+          marginTop: 60,
+          paddingTop: 50,
+          alignItems: "center",
+        }}
+      >
+        <Image
+          style={{
+            alignItems: "center",
+            width: 220,
+            height: 40,
+            resizeMode: "contain",
+            position: "absolute",
+          }}
+          source={require("../src/images/alphablanco.png")}
+        />
+      </View>
+      <View
+        style={{
+          marginTop: 70,
+
+          backgroundColor: COLORES.BLACK,
+          borderTopLeftRadius: 40,
+          borderTopRightRadius: 40,
+          height: "100%",
+          paddingHorizontal: 35,
+        }}
+      >
+        <View>
+          <TextInput
+            style={{
+              width: WIDTH - 100,
+              backgroundColor: COLORES.WHITE,
+              marginTop: 250,
+              height: 45,
+              borderRadius: 10,
+              fontSize: 16,
+              backgroundColor: "rgba(255, 255, 255, 255)",
+              color: "rgba(0, 0, 0, 0.5)",
+              textAlign: "center",
+              marginHorizontal: 25,
+              marginBottom: 12,
+            }}
+            value={Usuario}
+            onChangeText={(anything) => setUsuario(anything)}
+            placeholder={"user name"}
+            placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
+            underlineColorAndroid="transparent"
+          />
+        </View>
+        <View>
+          <TextInput
+            style={{
+              width: WIDTH - 100,
+              backgroundColor: COLORES.WHITE,
+              height: 45,
+              borderRadius: 10,
+              fontSize: 16,
+              backgroundColor: "rgba(255, 255, 255, 255)",
+              color: "rgba(0, 0, 0, 0.5)",
+              textAlign: "center",
+              marginHorizontal: 25,
+              marginBottom: 12,
+            }}
+            value={Password}
+            onChangeText={(anything) => setPassword(anything)}
+            secureTextEntry={isSecuryEntry}
+            placeholder={"password"}
+            placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
+            underlineColorAndroid="transparent"
+          />
+          <TouchableOpacity
+            onPress={() => {
+              setIsSecureEntry((prev) => !prev);
+            }}
+            style={{
+              position: "absolute",
+              top: 8,
+              right: 37,
+            }}
+          >
+            <Ionicons
+              name={isSecuryEntry ? "ios-eye-outline" : "ios-eye-off-outline"}
+              size={26}
+              color={"rgba(0, 0, 0, 0.5)"}
             />
-          </View>
-          <View>
-            <TextInput
-              value={Password}
-              onChangeText={(anything) => setPassword(anything)}
-              style={styles.sinput}
-              secureTextEntry={isSecuryEntry}
-              placeholder={"password"}
-              placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
-              underlineColorAndroid="transparent"
-            />
-            <TouchableOpacity
-              onPress={() => {
-                setIsSecureEntry((prev) => !prev);
-              }}
-              style={styles.sbtneye}
-            >
-              <Ionicons
-                name={isSecuryEntry ? "ios-eye-outline" : "ios-eye-off-outline"}
-                size={26}
-                color={"rgba(0, 0, 0, 0.5)"}
-              />
-            </TouchableOpacity>
-          </View>
-    
-          <TouchableOpacity style={styles.sbtnlogin} onPress={signin}>
-            <Text style={styles.stext}>Login</Text>
           </TouchableOpacity>
-        </ImageBackground>
-      );
-}
-
-
-const styles = StyleSheet.create({
-
-    scontainer: {
-      marginTop: 270,
-    },
-    simgbackground: {
-      flex: 1,
-      backgroundColor: 'black',
-      width: null,
-      height: null,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-  
-    stextinput: {
-      fontSize: 100,
-    },
-    sinput: {
-      marginBottom: 12,
-      width: WIDTH - 100,
-      height: 45,
-      borderRadius: 10,
-      fontSize: 16,
-      backgroundColor: "rgba(255, 255, 255, 255)",
-      color: "rgba(0, 0, 0, 0.5)",
-      textAlign: "center",
-      marginHorizontal: 25,
-    },
-    sbtnlogin: {
-      width: WIDTH - 220,
-      height: 25,
-      borderRadius: 4,
-      backgroundColor: "#01a859",
-      alignSelf: "flex-end",
-      marginTop: 20,
-      marginRight: 50,
-    },
-    stext: {
-      color: "rgba(255, 255, 255, 255)",
-      fontSize: 16,
-      textAlign: "center",
-    },
-    sbtneye: {
-      position: "absolute",
-      top: 8,
-      right: 37,
-    },
-  });
-  
-export default App;
+        </View>
+        <View>
+          <TouchableOpacity
+            style={{
+              width: WIDTH - 220,
+              height: 25,
+              borderRadius: 4,
+              backgroundColor: "#01a859",
+              alignSelf: "flex-end",
+              marginTop: 20,
+              marginRight: 5,
+            }}
+            onPress={signin}
+          >
+            <Text
+              style={{
+                color: "rgba(255, 255, 255, 255)",
+                fontSize: 16,
+                textAlign: "center",
+              }}
+            >
+              Login
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{ marginTop: 80, flexDirection: "row", alignItems: "center" }}
+        >
+          <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
+          <View>
+            <Text
+              style={{ width: 50, textAlign: "center", color: "white" }}
+            ></Text>
+          </View>
+          <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
+        </View>
+      </View>
+    </View>
+  );
+};
+export default Login;
