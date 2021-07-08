@@ -7,19 +7,24 @@ import {
   StyleSheet,
   BackHandler,
   ToastAndroid,
+  ListItem
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { CredentialsContext } from "./../components/CredentialsContext";
 
 const Inicio = ({ route }) => {
-  
-  const {Analizador} = route.params;
+  const resul = route.params;
 
+  const Item = ({ Analizador }) => (
+    <View >
+      <Text >{Analizador}</Text>
+    </View>
+  );
 
   const nose = () => {
     handleToast(Analizador);
-  }
+  };
 
   const handleToast = (message) => {
     ToastAndroid.showWithGravity(
@@ -30,24 +35,43 @@ const Inicio = ({ route }) => {
   };
 
   return (
-
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={nose}>
-        <Text >nose  </Text>
+
+      <TouchableOpacity style={styles.button} onPress={listItems}>
+        <Text>nose </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("ActualizacionSW")}}>
-        <Text >ActualizacionSW  </Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          navigation.navigate("ActualizacionSW");
+        }}
+      >
+        <Text>ActualizacionSW </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("AgendaCita")}}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          navigation.navigate("AgendaCita");
+        }}
+      >
         <Text>AgendaCita </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("Compras")}}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          navigation.navigate("Compras");
+        }}
+      >
         <Text>Compras </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("MantenimientoEquipo")}}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          navigation.navigate("MantenimientoEquipo");
+        }}
+      >
         <Text>MantenimientoEquipo </Text>
       </TouchableOpacity>
-      
     </View>
   );
 };

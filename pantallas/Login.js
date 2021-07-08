@@ -40,8 +40,8 @@ const Login = ({ navigation }) => {
             const result = resData.BPAnalyzerRP;
             const resultado = resData;
             const {Estado, Observacion, AccesoId, BusinessPartner, BPAnalyzerRP} = resultado;
-            handleToast("BIENVENIDO:  " + BPAnalyzerRP[1].AnalizadorId);
-            // navigation.navigate('Inicio', {...BPAnalyzerRP[0]});
+            // handleToast("BIENVENIDO:  " + BPAnalyzerRP);
+            navigation.navigate('Inicio', {nose:BPAnalyzerRP});
           } else {
             handleToast(Observacion);
           }
