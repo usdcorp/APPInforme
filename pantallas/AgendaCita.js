@@ -11,7 +11,9 @@ import {
 const AgendaCita = ({ navigation }) => {
     return(
         <View><Text>Hola Diego</Text>
-        <Text>Hola jose</Text></View>
+        <Text>Hola jose</Text>
+        <Text>Hola jose</Text>
+        </View>
 
     );
 }
