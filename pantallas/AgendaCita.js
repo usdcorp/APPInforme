@@ -10,7 +10,13 @@ import {
 
 const AgendaCita = ({ navigation }) => {
     return(
+<<<<<<< HEAD
         <View><Text>Hola victor</Text></View>
+=======
+        <View><Text>Hola Diego</Text>
+        <Text>Hola jose</Text></View>
+
+>>>>>>> 84847615aa8fdd49f042f12afbff63dcac9716ea
     );
 }
 
