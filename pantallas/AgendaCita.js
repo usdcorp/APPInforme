@@ -13,6 +13,7 @@ const AgendaCita = ({ navigation }) => {
         <View><Text>Hola Diego</Text>
         <Text>Hola jose</Text>
         <Text>Hola jose</Text>
+        <Text>Hola jose</Text>
         </View>
 
     );
