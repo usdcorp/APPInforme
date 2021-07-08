@@ -13,6 +13,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { CredentialsContext } from "./../components/CredentialsContext";
 
+const Item = ({ AnalizadorId }) => (
+  <View >
+    <Text >{AnalizadorId}</Text>
+  </View>
+);
+
+
 const Inicio = ({ route }) => {
   const resul = route.params;
 
