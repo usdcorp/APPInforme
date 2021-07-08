@@ -2,7 +2,7 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { credentialsContext } from "./../components/Context";
+import {credentialsContext} from "./../components/Context"
 
 import Login from "../pantallas/Login";
 import Inicio from "../pantallas/Inicio";
@@ -16,23 +16,14 @@ const Stack = createStackNavigator();
 
 const Root = () => {
   return (
-    <credentialsContext.Consumer>
-      {(storedCredentials) => (
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="Login">
-            {storedCredentials ? (
-              <Stack.Screen name="Login" component={Inicio} />
-            ) : (
-              <>
-                <Stack.Screen name="Inicio" component={Login} />
-              </>
-            )}
-          </Stack.Navigator>
-        </NavigationContainer>
-      )}
-    </credentialsContext.Consumer>
-  );
-
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={Login}/>
+        <Stack.Screen name="Inicio" component={Inicio}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+    
   //   <CredentialsContext.Consumer>
   //     {({ storedCredentials }) => (
   //       <NavigationContainer>
@@ -137,5 +128,5 @@ const Root = () => {
   //     )}
   //   </CredentialsContext.Consumer>
   // );
-};
+}
 export default Root;

@@ -21,8 +21,6 @@ const Login = ({ navigation }) => {
   const [Usuario, setUsuario] = useState("");
   const [Password, setPassword] = useState("");
   
-  const [storedCredentials, setstoredCredentials ] = useContext(credentialsContext)
-
   const signin = async () => {
     if (Usuario != "" && Password != "") {
       await fetch("http://119.8.144.182:1035/api/businesspartneraccess", {
@@ -54,20 +52,6 @@ const Login = ({ navigation }) => {
       handleToast("Campos vacios");
     }
   };
-
-  let credenciales= ['nandito', '123'];
-  persistLogin(credenciales);
-
-  const persistLogin = async (credentials) =>{
-    await AsyncStorage.setItem('BusinessPartnerCredentials', JSON.stringify(credentials))
-    .then(()=>{
-      setstoredCredentials(credentials);
-    })
-    .catch((error) => {
-      console.log(error);
-      handleToast("Error al guardar los credenciales")
-    })
-  }
 
   const handleToast = (message) => {
     ToastAndroid.showWithGravity(
