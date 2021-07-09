@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect, useContext } from "react";
+import { StatusBar } from "expo-status-bar";
 import {
   View,
   Text,
@@ -7,30 +8,56 @@ import {
   StyleSheet,
   BackHandler,
   ToastAndroid,
-  ListItem
+  ListItem,
+  FlatList,
+  Image,
+  Animated,
+  Dimensions,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import COLORS from "./../src/utils/Colores";
 import { CredentialsContext } from "./../components/CredentialsContext";
 
-const Item = ({ AnalizadorId }) => (
-  <View >
-    <Text >{AnalizadorId}</Text>
-  </View>
-);
 
 
-const Inicio = ({ route }) => {
-  const resul = route.params;
+const { width, height } = Dimensions.get("window");
+const LOGO_WIDTH = 220;
+const LOGO_HEIGHT = 40;
+const DOT_SIZE = 40;
+const TICKER_HEIGHT = 40;
+const CIRCLE_SIZE = width * 0.6;
 
-  const Item = ({ Analizador }) => (
-    <View >
-      <Text >{Analizador}</Text>
-    </View>
-  );
+const Inicio = ({ navigation }) => {
+  const [objAnalyzer, setobjAnalyzer] = useState([]);
+  const [objBPOptionRP, setobjBPOptionRP] = useState([]);
+  const scrollX = React.useRef(new Animated.Value(0)).current;
 
-  const nose = () => {
-    handleToast(Analizador);
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    fetch("http://119.8.144.182:1035/api/businesspartneranalyzer", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        BusinessPartnerId: 1,
+      }),
+    })
+      .then((resp) => resp.json())
+      .then((respData) => {
+        if (respData !== null) {
+          setobjAnalyzer(respData);
+        } else {
+          console.log("Array vacio");
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
   };
 
   const handleToast = (message) => {
@@ -41,44 +68,29 @@ const Inicio = ({ route }) => {
     );
   };
 
+
   return (
     <View style={styles.container}>
 
-      <TouchableOpacity style={styles.button} onPress={listItems}>
-        <Text>nose </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate("ActualizacionSW");
-        }}
-      >
-        <Text>ActualizacionSW </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate("AgendaCita");
-        }}
-      >
-        <Text>AgendaCita </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate("Compras");
-        }}
-      >
-        <Text>Compras </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate("MantenimientoEquipo");
-        }}
-      >
-        <Text>MantenimientoEquipo </Text>
-      </TouchableOpacity>
+      
+      {/* <StatusBar style="light" />
+      <Animated.FlatList
+        keyExtractor={(item) => item.key}
+        data={data}
+        renderItem={({ item, index }) => (
+          <Item {...item} index={index} scrollX={scrollX} />
+        )}
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        horizontal
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: true }
+        )}
+        scrollEventThrottle={16}
+      />
+
+      <Pagination scrollX={scrollX} /> */}
     </View>
   );
 };
@@ -86,8 +98,7 @@ const Inicio = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 10,
+    backgroundColor: COLORS.BLACK,
   },
   button: {
     marginBottom: 10,

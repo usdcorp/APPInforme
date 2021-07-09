@@ -37,11 +37,18 @@ const Login = ({ navigation }) => {
         .then((res) => res.json())
         .then((resData) => {
           if (resData.Observacion == "OK") {
-            const result = resData.BPAnalyzerRP;
-            const resultado = resData;
-            const {Estado, Observacion, AccesoId, BusinessPartner, BPAnalyzerRP} = resultado;
-            // handleToast("BIENVENIDO:  " + BPAnalyzerRP);
-            navigation.navigate('Inicio', {nose:BPAnalyzerRP});
+            const { BusinessPartnerId, BusinessPartner } = resData.BPUserRP;
+            try {
+              AsyncStorage.setItem(
+                "BusinessPartnerCredentials",
+                JSON.stringify(resData.BPUserRP)
+              );
+            } catch (error) {
+              console.warn(error);
+            }
+            handleToast("BIENVENIDO:  " + BusinessPartner);
+            navigation.navigate("Inicio");
+            // navigation.navigate('Inicio', {DATA:BPAnalyzerRP});
           } else {
             handleToast(Observacion);
           }
