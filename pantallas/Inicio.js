@@ -70,28 +70,49 @@ const Inicio = ({ navigation }) => {
 
 
   return (
+
     <View style={styles.container}>
+{/*       
+    <StatusBar style="light" />
+    <Animated.FlatList
+      keyExtractor={(item) => item.key}
+      data={data}
+      renderItem={({ item, index }) => (
+        <Item {...item} index={index} scrollX={scrollX} />
+      )}
+      pagingEnabled
+      showsHorizontalScrollIndicator={false}
+      horizontal
+      onScroll={Animated.event(
+        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+        { useNativeDriver: true }
+      )}
+      scrollEventThrottle={16}
+    />
 
-      
-      {/* <StatusBar style="light" />
-      <Animated.FlatList
-        keyExtractor={(item) => item.key}
-        data={data}
-        renderItem={({ item, index }) => (
-          <Item {...item} index={index} scrollX={scrollX} />
-        )}
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        horizontal
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: true }
-        )}
-        scrollEventThrottle={16}
-      />
+    <Pagination scrollX={scrollX} /> */}
+  </View>
 
-      <Pagination scrollX={scrollX} /> */}
-    </View>
+    // <View style={styles.container}>
+    //   <StatusBar style="light" />
+    //   <Animated.FlatList
+    //     keyExtractor={(item) => item.key}
+    //     data={data}
+    //     renderItem={({ item, index }) => (
+    //       <Item {...item} index={index} scrollX={scrollX} />
+    //     )}
+    //     pagingEnabled
+    //     showsHorizontalScrollIndicator={false}
+    //     horizontal
+    //     onScroll={Animated.event(
+    //       [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+    //       { useNativeDriver: true }
+    //     )}
+    //     scrollEventThrottle={16}
+    //   />
+
+    //   <Pagination scrollX={scrollX} />
+    // </View>
   );
 };
 
