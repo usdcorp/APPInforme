@@ -2,6 +2,8 @@ import React, { Component, useState, useEffect, useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 import { ListItem } from "react-native-elements";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 ("");
 import {
   AntDesign,
@@ -25,7 +27,6 @@ import {
   Dimensions,
   Button,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import COLORS from "./../src/utils/Colores";
 import { CredentialsContext } from "./../components/CredentialsContext";
 
@@ -43,6 +44,18 @@ const Inicio = ({ navigation }) => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const getSessionid = async () => {
+    try {
+      const value = await AsyncStorage.getItem("BusinessPartnerId");
+      if (value !== null) {
+        // We have data!!
+        console.log(value);
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
 
   const Config = () => {
     // navigation.navigate('Compras');
@@ -69,13 +82,25 @@ const Inicio = ({ navigation }) => {
   const ItemMenu = ({ Opcion, AnalyzerId, OptionId }) => {
     const handePress = ({ AnalyzerId, OptionId }) => {
       if (OptionId == 1) {
-        navigation.navigate("MantenimientoEquipo", {AnalyzerId: AnalyzerId, OptionId: OptionId});
+        navigation.navigate("MantenimientoEquipo", {
+          AnalyzerId: AnalyzerId,
+          OptionId: OptionId,
+        });
       } else if (OptionId == 2) {
-        navigation.navigate("ActualizacionSW", {AnalyzerId: AnalyzerId, OptionId: OptionId});
+        navigation.navigate("ActualizacionSW", {
+          AnalyzerId: AnalyzerId,
+          OptionId: OptionId,
+        });
       } else if (OptionId == 3) {
-        navigation.navigate("AgendaCita", {AnalyzerId: AnalyzerId, OptionId: OptionId});
+        navigation.navigate("AgendaCita", {
+          AnalyzerId: AnalyzerId,
+          OptionId: OptionId,
+        });
       } else if (OptionId == 4) {
-        navigation.navigate("Compras", {AnalyzerId: AnalyzerId, OptionId: OptionId});
+        navigation.navigate("Compras", {
+          AnalyzerId: AnalyzerId,
+          OptionId: OptionId,
+        });
       }
     };
 
