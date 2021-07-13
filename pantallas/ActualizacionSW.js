@@ -8,9 +8,13 @@ import {
 
 } from 'react-native';
 
-const ActualizacionSW = ({ navigation }) => {
+const ActualizacionSW = ({ route }) => {
+    const {AnalyzerId, OptionId} = route.params;
     return(
-        <View><Text>ActualizacionSW</Text></View>
+        <View>
+            <Text>AnalyzerId: {AnalyzerId}</Text>
+            <Text>OptionId: {OptionId}</Text>
+        </View>
     );
 }
 

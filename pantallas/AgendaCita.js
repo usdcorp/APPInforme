@@ -1,11 +1,13 @@
 import React, { Component, useEffect, useState } from "react";
 import { View, TextInput, Image, Text, StyleSheet } from "react-native";
 
-const AgendaCita = ({ navigation }) => {
-  return (
-    <View>
-      <Text>Hola victor</Text>
-    </View>
+const AgendaCita = ({ route }) => {
+  const {AnalyzerId, OptionId} = route.params;
+  return(
+      <View>
+          <Text>AnalyzerId: {AnalyzerId}</Text>
+          <Text>OptionId: {OptionId}</Text>
+      </View>
   );
 };
 

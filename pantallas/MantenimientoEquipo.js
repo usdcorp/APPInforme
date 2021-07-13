@@ -8,9 +8,13 @@ import {
 
 } from 'react-native';
 
-const MantenimientoEquipo = ({ navigation }) => {
+const MantenimientoEquipo = ({ route }) => {
+    const {AnalyzerId, OptionId} = route.params;
     return(
-        <View><Text>Hola Mundo</Text></View>
+        <View>
+            <Text>AnalyzerId: {AnalyzerId}</Text>
+            <Text>OptionId: {OptionId}</Text>
+        </View>
     );
 }
 
