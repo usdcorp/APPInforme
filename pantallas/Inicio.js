@@ -3,8 +3,8 @@ import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 import { ListItem } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { credentialsContext } from "../components/Context";
 
-("");
 import {
   AntDesign,
   MaterialIcons,
@@ -28,7 +28,6 @@ import {
   Button,
 } from "react-native";
 import COLORS from "./../src/utils/Colores";
-import { CredentialsContext } from "./../components/CredentialsContext";
 
 const { width, height } = Dimensions.get("window");
 const LOGO_WIDTH = 220;
@@ -40,21 +39,21 @@ const CIRCLE_SIZE = width * 0.6;
 const Inicio = ({ navigation }) => {
   const [objAnalyzer, setobjAnalyzer] = useState([]);
   const scrollX = React.useRef(new Animated.Value(0)).current;
+  const {storedCredentials, setstoredCredentials} = useContext(credentialsContext);
+  const {BusinessPartnerId, BusinessPartner} = storedCredentials;
+
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const getSessionid = async () => {
-    try {
-      const value = await AsyncStorage.getItem("BusinessPartnerId");
-      if (value !== null) {
-        // We have data!!
-        console.log(value);
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
+  const Salir = () => {
+    console.log("cerrado")
+    AsyncStorage.removeItem("BusinessPartnerCredentials")
+      .then(() => {
+        // navigation.navigate("Login");
+      })
+      .catch((error) => console.warn(error));
   };
 
   const Config = () => {
@@ -228,17 +227,6 @@ const Inicio = ({ navigation }) => {
                   AnalyzerId={item.AnalyzerId}
                   OptionId={item.OptionId}
                 />
-                // <View>
-                //   <TouchableOpacity>
-                //     <Text style={styles.description}>{item.Opcion}</Text>
-                //     <AntDesign
-                //       name="right"
-                //       size={20}
-                //       color="orange"
-                //       style={{ position: "absolute", top: 4, right: 30 }}
-                //     />
-                //   </TouchableOpacity>
-                // </View>
               );
             }}
             keyExtractor={(item) => item.OptionId.toString()}
@@ -292,7 +280,7 @@ const Inicio = ({ navigation }) => {
         "Content-type": "application/json",
       },
       body: JSON.stringify({
-        BusinessPartnerId: 1,
+        BusinessPartnerId: BusinessPartnerId,
       }),
     })
       .then((resp) => resp.json())
@@ -326,10 +314,11 @@ const Inicio = ({ navigation }) => {
           {
             marginTop: 40,
             marginLeft: 20,
-            display: "none",
+            // display: "none",
           },
         ]}
-        onPress={Config}
+        // onPress={getSessionid}
+        onPress={Salir}
       >
         <AntDesign name="setting" size={30} color="white" />
       </TouchableOpacity>
@@ -354,6 +343,7 @@ const Inicio = ({ navigation }) => {
         )}
         scrollEventThrottle={16}
       />
+
       <Image
         style={styles.imgStard}
         source={require("./../src/images/footerstart.png")}

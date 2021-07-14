@@ -1,10 +1,10 @@
 import React, { Component, useState, useContext } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { credentialsContext } from "../components/Context";
 
 const { width: WIDTH } = Dimensions.get("window");
 import COLORES from "../src/utils/Colores";
-import { credentialsContext } from "./../components/Context";
 
 import {
   View,
@@ -20,6 +20,7 @@ const Login = ({ navigation }) => {
   const [isSecuryEntry, setIsSecureEntry] = useState(true);
   const [Usuario, setUsuario] = useState("");
   const [Password, setPassword] = useState("");
+  const {storedCredentials, setstoredCredentials} = useContext(credentialsContext);
 
   const signin = async () => {
     if (Usuario != "" && Password != "") {
@@ -37,18 +38,11 @@ const Login = ({ navigation }) => {
         .then((res) => res.json())
         .then((resData) => {
           if (resData.Observacion == "OK") {
-            const { BusinessPartnerId, BusinessPartner } = resData.BPUserRP;
-            try {
-              AsyncStorage.setItem(
-                "BusinessPartnerCredentials",
-                JSON.stringify(resData.BPUserRP)
-              );
-            } catch (error) {
-              console.warn(error);
-            }
+            const {Estado, Observacion, BPUserRP} = resData;
+            const {BusinessPartner} = BPUserRP;
+            persistLogin({...BPUserRP}, Observacion, Estado);
+
             handleToast("BIENVENIDO:  " + BusinessPartner);
-            navigation.navigate("Inicio");
-            // navigation.navigate('Inicio', {DATA:BPAnalyzerRP});
           } else {
             handleToast(Observacion);
           }
@@ -68,6 +62,16 @@ const Login = ({ navigation }) => {
       ToastAndroid.BOTTOM
     );
   };
+
+  const persistLogin = (credentials, Observacion, Estado) =>{
+    AsyncStorage.setItem('BusinessPartnerCredentials', JSON.stringify(credentials))
+    .then(()=>{
+      setstoredCredentials(credentials);
+    })
+    .catch((error)=>{
+      console.warn(error)
+    })
+  }
 
   return (
     <View

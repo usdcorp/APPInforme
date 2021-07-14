@@ -16,28 +16,35 @@ const Stack = createStackNavigator();
 
 const Root = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: { backgroundColor: "transparent" },
-          headerTransparent: true,
-          headerTitle: "",
-          headerLeftContainerStyle: { paddingLeft: 20 },
-        }}
-        initialRouteName="Login"
-      >
-        <Stack.Screen options={{}} name="Login" component={Login} />
-        <Stack.Screen options={{}} name="Inicio" component={Inicio} />
-        <Stack.Screen
-          name="MantenimientoEquipo"
-          component={MantenimientoEquipo}
-        />
-        <Stack.Screen name="ActualizacionSW" component={ActualizacionSW} />
-        <Stack.Screen name="AgendaCita" component={AgendaCita} />
-        <Stack.Screen name="Compras" component={Compras} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <credentialsContext.Consumer>
+      {({ storedCredentials }) => (
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: "transparent" },
+              headerTransparent: true,
+              headerTitle: "",
+              headerLeftContainerStyle: { paddingLeft: 20 },
+            }}
+            initialRouteName="Login"
+          >
+            {storedCredentials ? (
+              <>
+                <Stack.Screen options={{}} name="Inicio" component={Inicio} />
+                <Stack.Screen name="MantenimientoEquipo" component={MantenimientoEquipo}/>
+                <Stack.Screen name="ActualizacionSW" component={ActualizacionSW}/>
+                <Stack.Screen name="AgendaCita" component={AgendaCita} />
+                <Stack.Screen name="Compras" component={Compras} />
+              </>
+            ) : (
+              <>
+                <Stack.Screen options={{}} name="Login" component={Login} />
+              </>
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      )}
+    </credentialsContext.Consumer>
   );
-
 };
 export default Root;
