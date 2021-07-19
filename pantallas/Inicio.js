@@ -26,6 +26,7 @@ import {
   Animated,
   Dimensions,
   Button,
+  Alert,
 } from "react-native";
 import COLORS from "./../src/utils/Colores";
 
@@ -39,28 +40,38 @@ const CIRCLE_SIZE = width * 0.6;
 const Inicio = ({ navigation }) => {
   const [objAnalyzer, setobjAnalyzer] = useState([]);
   const scrollX = React.useRef(new Animated.Value(0)).current;
-  const {storedCredentials, setstoredCredentials} = useContext(credentialsContext);
-  const {BusinessPartnerId, BusinessPartner} = storedCredentials;
-
+  const { storedCredentials, setstoredCredentials } =
+    useContext(credentialsContext);
+  const { BusinessPartnerId, BusinessPartner } = storedCredentials;
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const Salir = () => {
-    console.log("cerrado")
-    AsyncStorage.removeItem("BusinessPartnerCredentials")
-      .then(() => {
-        // navigation.navigate("Login");
-      })
-      .catch((error) => console.warn(error));
-  };
-
-  const Config = () => {
-    // navigation.navigate('Compras');
-    handleToast("configuracion");
-    console.log("nose");
-  };
+  const Logout = () =>
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to Sign Out?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            console.log("cerrado");
+            AsyncStorage.removeItem("BusinessPartnerCredentials")
+              .then(() => {
+                setstoredCredentials("");
+              })
+              .catch((error) => console.warn(error));
+          },
+        },
+      ],
+      { cancelable: false }
+    );
 
   const phone = () => {
     handleToast("Llamar");
@@ -100,13 +111,14 @@ const Inicio = ({ navigation }) => {
           AnalyzerId: AnalyzerId,
           OptionId: OptionId,
         });
-      }
+      } 
     };
 
     return (
       <View>
         <TouchableOpacity onPress={() => handePress({ AnalyzerId, OptionId })}>
           <Text style={styles.description}>{Opcion} </Text>
+          <Text>Derecha</Text>
           <AntDesign
             name="right"
             size={20}
@@ -303,12 +315,33 @@ const Inicio = ({ navigation }) => {
       ToastAndroid.BOTTOM
     );
   };
+  const irPerfil = () => {
+    navigation.navigate("Perfil");
+  };
 
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
 
-      <TouchableOpacity
+      <View
+        style={{
+          flexDirection: "row",
+          marginTop: 40,
+          alignItems: "center",
+          paddingHorizontal: 20,
+        }}
+      >
+        <AntDesign onPress={Logout} name="setting" size={30} color="white" />
+        <MaterialIcons
+          name="account-circle"
+          onPress={irPerfil}
+          size={33}
+          style={{ marginLeft: 270 }}
+          color="white"
+        />
+      </View>
+
+      {/* <TouchableOpacity
         style={[
           styles.buttonSetting,
           {
@@ -321,7 +354,7 @@ const Inicio = ({ navigation }) => {
         onPress={Salir}
       >
         <AntDesign name="setting" size={30} color="white" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <Animated.FlatList
         keyExtractor={(item) => item.AnalyzerId.toString()}

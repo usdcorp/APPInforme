@@ -10,6 +10,7 @@ import MantenimientoEquipo from "../pantallas/MantenimientoEquipo";
 import ActualizacionSW from "../pantallas/ActualizacionSW";
 import AgendaCita from "../pantallas/AgendaCita";
 import Compras from "../pantallas/Compras";
+import Perfil from "../pantallas/Perfil";
 import nose from "../pantallas/nose";
 
 const Stack = createStackNavigator();
@@ -30,16 +31,39 @@ const Root = () => {
           >
             {storedCredentials ? (
               <>
-                <Stack.Screen options={{}} name="Inicio" component={Inicio} />
-                <Stack.Screen name="MantenimientoEquipo" component={MantenimientoEquipo}/>
-                <Stack.Screen name="ActualizacionSW" component={ActualizacionSW}/>
-                <Stack.Screen name="AgendaCita" component={AgendaCita} />
-                <Stack.Screen name="Compras" component={Compras} />
+                <Stack.Screen
+                  options={{ headerTintColor: "white" }}
+                  name="Inicio"
+                  component={Inicio}
+                />
+                <Stack.Screen
+                  options={{ headerTintColor: "white" }}
+                  name="MantenimientoEquipo"
+                  component={MantenimientoEquipo}
+                />
+                <Stack.Screen
+                  options={{ headerTintColor: "white" }}
+                  name="ActualizacionSW"
+                  component={ActualizacionSW}
+                />
+                <Stack.Screen
+                  options={{ headerTintColor: "white" }}
+                  name="AgendaCita"
+                  component={AgendaCita}
+                />
+                <Stack.Screen
+                  options={{ headerTintColor: "white" }}
+                  name="Compras"
+                  component={Compras}
+                />
+                <Stack.Screen
+                  options={{ headerTintColor: "white" }}
+                  name="Perfil"
+                  component={Perfil}
+                />
               </>
             ) : (
-              <>
-                <Stack.Screen options={{}} name="Login" component={Login} />
-              </>
+              <Stack.Screen options={{}} name="Login" component={Login} />
             )}
           </Stack.Navigator>
         </NavigationContainer>
