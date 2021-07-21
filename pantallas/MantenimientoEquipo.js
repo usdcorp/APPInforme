@@ -1,4 +1,6 @@
 import React, { Component, useEffect, useState, useContext } from "react";
+import { Card } from "react-native-elements";
+
 import {
   View,
   TextInput,
@@ -7,7 +9,9 @@ import {
   StyleSheet,
   Animated,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { credentialsContext } from "../components/Context";
@@ -61,23 +65,50 @@ const MantenimientoEquipo = ({ route }) => {
     Reporte,
   }) => {
     return (
-      <View>
-        <View>
-        <Text style={{color:'white'}}>Tipo Mant.</Text>
-        <Text style={{color:'white', position: "absolute", top: 4, right: 30}}>{TipoMant}</Text>
-        </View>
-        <View>
-        <Text style={{color:'white'}}>Fecha</Text>
-        <Text style={{color:'white', position: "absolute", top: 4, right: 30}}>{FechaMant}</Text>
-        </View>
-
-      </View>
+      <SafeAreaView >
+        <ScrollView >
+          <Card containerStyle={{backgroundColor:'#FFF'}}>
+            <View style={{flexDirection:'row'}}>
+              <Text>Tipo Mant.</Text>
+              <Text>{TipoMant}</Text>
+            </View>
+            <View style={{flexDirection:'row'}}>
+              <Text>Tipo Mant.</Text>
+              <Text>{TipoMant}</Text>
+            </View>
+            <View style={{flexDirection:'row'}}>
+              <Text>Tipo Mant.</Text>
+              <Text>{TipoMant}</Text>
+            </View>
+            <View style={{flexDirection:'row'}}>
+              <Text>Tipo Mant.</Text>
+              <Text>{TipoMant}</Text>
+            </View>
+            <View style={{flexDirection:'row'}}>
+              <Text>Tipo Mant.</Text>
+              <Text>{TipoMant}</Text>
+            </View>
+            <View style={{flexDirection:'row'}}>
+              <Text>Tipo Mant.</Text>
+              <Text>{TipoMant}</Text>
+            </View>
+            <View style={{flexDirection:'row'}}>
+              <Text>Tipo Mant.</Text>
+              <Text>{TipoMant}</Text>
+            </View>
+            <View style={{flexDirection:'row'}}>
+              <Text>Tipo Mant.</Text>
+              <Text>{TipoMant}</Text>
+            </View>
+          </Card>
+        </ScrollView>
+      </SafeAreaView>
     );
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="light" />
+    <View style={{ backgroundColor: "#000", flex: 1 }}>
+      {/* <StatusBar style="light" /> */}
 
       <Animated.FlatList
         keyExtractor={(item) => item.MaintenanceId.toString()}
@@ -107,54 +138,7 @@ const MantenimientoEquipo = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
-  },
-  whiteCard: {
-    marginTop: 90,
-    backgroundColor: "#FFF",
-    elevation: 1,
-    marginLeft: 20,
-    marginRight: 20,
-    borderRadius: 15,
-  },
-  blackCard: {
-    marginTop: 1,
-    marginBottom: 1,
     backgroundColor: "#000",
-    marginRight: 1,
-    marginLeft: 1,
-    borderRadius: 15,
-  },
-  backHeaderCard: {
-    backgroundColor: "#de5433",
-    borderTopEndRadius: 15,
-    borderTopStartRadius: 15,
-    flexDirection: "row",
-    padding: 20,
-    alignItems: "center",
-  },
-  textHeader: {
-    color: "#fff",
-    fontSize: 12,
-    width: 75,
-    marginRight: 5,
-    fontWeight: "bold",
-  },
-  separator: {
-    alignSelf: "stretch",
-    borderBottomWidth: 1,
-    borderBottomColor: "#fff",
-  },
-  contentText: {
-    flexDirection: "row",
-    padding: 20,
-    alignItems: "center",
-  },
-  textContent: {
-    color: "white",
-    fontSize: 11,
-    width: 75,
-    marginRight: 5,
   },
 });
 

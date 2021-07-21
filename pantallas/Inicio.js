@@ -118,7 +118,6 @@ const Inicio = ({ navigation }) => {
       <View>
         <TouchableOpacity onPress={() => handePress({ AnalyzerId, OptionId })}>
           <Text style={styles.description}>{Opcion} </Text>
-          <Text>Derecha</Text>
           <AntDesign
             name="right"
             size={20}
