@@ -7,7 +7,7 @@ const Compras = ({ route }) => {
     <View style={styles.container}>
       <View style={styles.subcontainer}>
         <Text style={{color:'white'}}>AnalyzerId: {AnalyzerId}</Text>
-        <Text style={{color:'white'}}>OptionId: {OptionId}</Text>
+        <Text style={{color:'white'}}>OptionId--modificado: {OptionId}</Text>
       </View>
     </View>
   );
