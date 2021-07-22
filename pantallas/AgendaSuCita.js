@@ -15,6 +15,7 @@ import {
   Button,
   Platform,
   TouchableOpacity,
+  ToastAndroid,
 } from "react-native";
 const { width, height } = Dimensions.get("window");
 const { width: WIDTH } = Dimensions.get("window");
@@ -30,7 +31,10 @@ const AgendaSuCita = ({ route }) => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  const [text, setText] = useState("Empty");
+  const [text, setText] = useState("");
+
+  const [asunto, setAsunto] = useState("");
+  const [comentario, setComentario] = useState("");
 
   const onChange = (event, selectedDate) => {
     const courrentDate = selectedDate || date;
@@ -45,7 +49,6 @@ const AgendaSuCita = ({ route }) => {
       "/" +
       tempDate.getFullYear();
     setText(fDate);
-    console.log(fDate);
   };
 
   const showMode = (courrentMode) => {
@@ -83,6 +86,48 @@ const AgendaSuCita = ({ route }) => {
       });
   };
 
+  const sedParameters = async () => {
+    if (text != "") {
+      await fetch("http://119.8.144.182:1035/api/businesspartnerscheduler", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          BusinessPartnerId: BusinessPartnerId,
+          ScheduleTypeId: objComboSeleccionado,
+          FechaCita: text,
+          Asunto: asunto,
+          Comentario: comentario,
+        }),
+      })
+        .then((res) => res.json())
+        .then((resData) => {
+          if (resData.Estado == 1) {
+            const { Observacion } = resData;
+          handleToast(Observacion);
+
+          } else {
+            handleToast(Observacion);
+          }
+        })
+        .catch((error) => {
+          handleToast("Intente de nuevo por favor!");
+        });
+        // console.log(BusinessPartnerId+ "-" + objComboSeleccionado + "-" + text + "-" + asunto + "-" + comentario)
+    } else {
+      handleToast("Campos vacios");
+    }
+  };
+  const handleToast = (message) => {
+    ToastAndroid.showWithGravity(
+      message,
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM
+    );
+  };
+
   return (
     <View
       style={{
@@ -97,7 +142,7 @@ const AgendaSuCita = ({ route }) => {
           style={{
             textTransform: "uppercase",
             paddingBottom: 5,
-            color: "#FFF",
+            color: "#de5433",
             fontWeight: "bold",
             textAlign: "left",
             width: width * 0.35,
@@ -106,7 +151,7 @@ const AgendaSuCita = ({ route }) => {
             lineHeight: 16 * 1.5,
           }}
         >
-          Tipo
+          Tipo Cita
         </Text>
 
         <View
@@ -145,7 +190,7 @@ const AgendaSuCita = ({ route }) => {
           style={{
             textTransform: "uppercase",
             paddingBottom: 5,
-            color: "#FFF",
+            color: "#de5433",
             fontWeight: "bold",
             textAlign: "left",
             width: width * 0.35,
@@ -160,28 +205,26 @@ const AgendaSuCita = ({ route }) => {
         <View>
           <TextInput
             style={{
+              // borderColor:'#de5433',
+              // borderWidth:1,
+
               width: WIDTH - 30,
-              backgroundColor: "white",
               height: 45,
               borderRadius: 10,
               fontSize: 16,
               backgroundColor: "rgba(255, 255, 255, 255)",
               color: "rgba(0, 0, 0, 0.5)",
               textAlign: "center",
-              // marginHorizontal: 25,
-              // marginBottom: 12,
             }}
-            // value={Password}
-            // onChangeText={(anything) => setPassword(anything)}
-            // secureTextEntry={isSecuryEntry}
-            placeholder={"password"}
+            value={text}
+            placeholder={"00/00/0000"}
             placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
             underlineColorAndroid="transparent"
           />
           <TouchableOpacity
-            // onPress={() => {
-            //   setIsSecureEntry((prev) => !prev);
-            // }}
+            onPress={() => {
+              showMode("date");
+            }}
             style={{
               position: "absolute",
               top: 8,
@@ -193,15 +236,6 @@ const AgendaSuCita = ({ route }) => {
         </View>
 
         <View>
-          <Text style={{ color: "white" }}> {text} </Text>
-          <View>
-            <Button
-              title="Fecha"
-              onPress={() => {
-                showMode("date");
-              }}
-            />
-          </View>
           {show && (
             <DateTimePicker
               testID="dateTimePicker"
@@ -213,6 +247,31 @@ const AgendaSuCita = ({ route }) => {
             />
           )}
         </View>
+      </View>
+
+      <View style={{ paddingTop: 20 }}>
+        <Text style={styles.textTitle}>Asunto</Text>
+        <TextInput
+          style={{
+            height: 100,
+            width: WIDTH - 30,
+            backgroundColor: "white",
+            borderRadius: 20,
+            fontSize: 16,
+            color: "rgba(0, 0, 0, 0.5)",
+            textAlignVertical: "top",
+            padding: 10,
+            borderColor: "white",
+          }}
+          value={asunto}
+          onChangeText={(anything) => setAsunto(anything)}
+          placeholder="Asunto..."
+          underlineColorAndroid="transparent"
+          placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
+          multiline={true}
+          onSubmitEditing={Keyboard.dismiss}
+          editable={true}
+        />
       </View>
 
       <View style={{ paddingTop: 20 }}>
@@ -229,6 +288,8 @@ const AgendaSuCita = ({ route }) => {
             padding: 10,
             borderColor: "white",
           }}
+          value={comentario}
+          onChangeText={(anything) => setComentario(anything)}
           placeholder="Comentario..."
           underlineColorAndroid="transparent"
           placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
@@ -236,6 +297,19 @@ const AgendaSuCita = ({ route }) => {
           onSubmitEditing={Keyboard.dismiss}
           editable={true}
         />
+      </View>
+      <View style={{ paddingTop: 30 }}>
+        <TouchableOpacity
+          onPress={sedParameters}
+          style={{
+            backgroundColor: "#de5433",
+            padding: 10,
+            borderRadius: 5,
+            width: WIDTH - 30,
+          }}
+        >
+          <Text style={{ color: "white", textAlign: "center" }}>Enviar</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -250,7 +324,7 @@ const styles = StyleSheet.create({
   textTitle: {
     textTransform: "uppercase",
     paddingBottom: 5,
-    color: "#FFF",
+    color: "#de5433",
     fontWeight: "bold",
     textAlign: "left",
     width: width * 0.35,
