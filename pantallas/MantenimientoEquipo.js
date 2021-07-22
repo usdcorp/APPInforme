@@ -1,6 +1,16 @@
 import React, { Component, useEffect, useState, useContext } from "react";
 import { Card } from "react-native-elements";
+import { Ionicons } from "@expo/vector-icons";
+import * as OpenAnything from 'react-native-openanything';
 
+import {
+  FontAwesome5,
+  AntDesign,
+  MaterialIcons,
+  FontAwesome,
+  Fontisto,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import {
   View,
   TextInput,
@@ -12,11 +22,14 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { credentialsContext } from "../components/Context";
+const { width, height } = Dimensions.get("window");
 
 const MantenimientoEquipo = ({ route }) => {
+
   const { storedCredentials, setstoredCredentials } =
     useContext(credentialsContext);
   const { BusinessPartnerId, BusinessPartner } = storedCredentials;
@@ -56,6 +69,7 @@ const MantenimientoEquipo = ({ route }) => {
       });
   };
 
+
   const Item = ({
     MaintenanceId,
     TipoMant,
@@ -63,42 +77,110 @@ const MantenimientoEquipo = ({ route }) => {
     Estado,
     Ingeniero,
     Reporte,
+    TieneReporte,
+    EstadoColor,
+
   }) => {
+    const path = `${Reporte}`;
+
     return (
-      <SafeAreaView >
-        <ScrollView >
-          <Card containerStyle={{backgroundColor:'#FFF'}}>
-            <View style={{flexDirection:'row'}}>
-              <Text>Tipo Mant.</Text>
-              <Text>{TipoMant}</Text>
+      <SafeAreaView>
+        <ScrollView>
+          <Card
+            containerStyle={{
+              backgroundColor: "#FFF",
+              borderRadius: 10,
+              borderColor: "none",
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: EstadoColor,
+                position: "absolute",
+                bottom: width * 0.27,
+                left: width * 0.75,
+                padding: 4,
+                height: 30,
+                width: 30,
+                borderRadius: 15,
+              }}
+            ></View>
+
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.textTitle}>Tipo Mant.</Text>
+
+              <Text
+                style={{
+                  color: "black",
+                  textTransform: "uppercase",
+                }}
+              >
+                {TipoMant}
+              </Text>
             </View>
-            <View style={{flexDirection:'row'}}>
-              <Text>Tipo Mant.</Text>
-              <Text>{TipoMant}</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.textTitle}>Fecha</Text>
+
+              <Text
+                style={{
+                  color: "black",
+                  textTransform: "uppercase",
+                }}
+              >
+                {FechaMant}
+              </Text>
             </View>
-            <View style={{flexDirection:'row'}}>
-              <Text>Tipo Mant.</Text>
-              <Text>{TipoMant}</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.textTitle}>Estado</Text>
+
+              <Text
+                style={{
+                  color: "black",
+                  textTransform: "uppercase",
+                }}
+              >
+                {Estado}
+              </Text>
             </View>
-            <View style={{flexDirection:'row'}}>
-              <Text>Tipo Mant.</Text>
-              <Text>{TipoMant}</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.textTitle}>Ingeniero</Text>
+
+              <Text
+                style={{
+                  color: "black",
+                  textTransform: "uppercase",
+                }}
+              >
+                {Ingeniero}
+              </Text>
             </View>
-            <View style={{flexDirection:'row'}}>
-              <Text>Tipo Mant.</Text>
-              <Text>{TipoMant}</Text>
-            </View>
-            <View style={{flexDirection:'row'}}>
-              <Text>Tipo Mant.</Text>
-              <Text>{TipoMant}</Text>
-            </View>
-            <View style={{flexDirection:'row'}}>
-              <Text>Tipo Mant.</Text>
-              <Text>{TipoMant}</Text>
-            </View>
-            <View style={{flexDirection:'row'}}>
-              <Text>Tipo Mant.</Text>
-              <Text>{TipoMant}</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.textTitle}>Reporte</Text>
+
+              <Text
+                style={{
+                  color: "black",
+                  textTransform: "uppercase",
+                }}
+              > 
+                <TouchableOpacity
+                  onPress={()=> OpenAnything.Pdf(`${Reporte}`) }
+                  style={{
+                    position: "absolute",
+                    top: 8,
+                    right: 37,
+                  }}
+                >
+                  
+                  <FontAwesome5
+                    name={
+                      TieneReporte ? "file-pdf" : ""
+                    }
+                    size={26}
+                    color={"#ff2116"}
+                  />
+                </TouchableOpacity>
+              </Text>
             </View>
           </Card>
         </ScrollView>
@@ -107,7 +189,7 @@ const MantenimientoEquipo = ({ route }) => {
   };
 
   return (
-    <View style={{ backgroundColor: "#000", flex: 1 }}>
+    <View style={{ backgroundColor: "#000", flex: 1, paddingTop: 90 }}>
       {/* <StatusBar style="light" /> */}
 
       <Animated.FlatList
@@ -127,6 +209,8 @@ const MantenimientoEquipo = ({ route }) => {
               Estado={item.Estado}
               Ingeniero={item.Ingeniero}
               Reporte={item.Reporte}
+              TieneReporte={item.TieneReporte}
+              EstadoColor={item.EstadoColor}
             />
           );
         }}
@@ -139,6 +223,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#000",
+  },
+  textTitle: {
+    textTransform: "uppercase",
+    paddingBottom: 5,
+    color: "#000",
+    fontWeight: "bold",
+    fontWeight: "600",
+    textAlign: "left",
+    width: width * 0.3,
+    marginRight: 10,
+    fontSize: 16,
+    lineHeight: 16 * 1.5,
+  },
+  active: {
+    backgroundColor: "#34FFB9",
+    position: "absolute",
+    bottom: 135,
+    left: width * 0.75,
+    padding: 4,
+    height: 30,
+    width: 30,
+    borderRadius: 15,
   },
 });
 

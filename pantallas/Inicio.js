@@ -111,7 +111,7 @@ const Inicio = ({ navigation }) => {
           AnalyzerId: AnalyzerId,
           OptionId: OptionId,
         });
-      } 
+      }
     };
 
     return (
@@ -330,10 +330,41 @@ const Inicio = ({ navigation }) => {
           paddingHorizontal: 20,
         }}
       >
-        <AntDesign onPress={Logout} name="setting" size={30} color="white" />
+        <TouchableOpacity
+          onPress={() => {
+            Alert.alert(
+              "Logout",
+              "Are you sure you want to Sign Out?",
+              [
+                {
+                  text: "Cancel",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel",
+                },
+                {
+                  text: "OK",
+                  onPress: () => {
+                    console.log("cerrado");
+                    AsyncStorage.removeItem("BusinessPartnerCredentials")
+                      .then(() => {
+                        setstoredCredentials("");
+                      })
+                      .catch((error) => console.warn(error));
+                  },
+                },
+              ],
+              { cancelable: false }
+            );
+          }}
+        >
+          <AntDesign name="setting" size={30} color="white" />
+        </TouchableOpacity>
+
         <MaterialIcons
           name="account-circle"
-          onPress={irPerfil}
+          onPress={() => {
+            navigation.navigate("Perfil");
+          }}
           size={33}
           style={{ marginLeft: 270 }}
           color="white"

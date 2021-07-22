@@ -9,6 +9,7 @@ import Inicio from "../pantallas/Inicio";
 import MantenimientoEquipo from "../pantallas/MantenimientoEquipo";
 import ActualizacionSW from "../pantallas/ActualizacionSW";
 import AgendaCita from "../pantallas/AgendaCita";
+import AgendaSuCita from "../pantallas/AgendaSuCita";
 import Compras from "../pantallas/Compras";
 import Perfil from "../pantallas/Perfil";
 import nose from "../pantallas/nose";
@@ -50,6 +51,11 @@ const Root = () => {
                   options={{ headerTintColor: "white" }}
                   name="AgendaCita"
                   component={AgendaCita}
+                />
+                <Stack.Screen
+                  options={{ headerTintColor: "white" }}
+                  name="AgendaSuCita"
+                  component={AgendaSuCita}
                 />
                 <Stack.Screen
                   options={{ headerTintColor: "white" }}
