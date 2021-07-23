@@ -1,5 +1,8 @@
-import React, { Component, useEffect, useState } from "react";
-import { View, TextInput, Image, Text, StyleSheet } from "react-native";
+import React, { Component, useEffect, useState, useContext } from "react";
+import { StatusBar } from "expo-status-bar";
+import { credentialsContext } from "../components/Context";
+import { Card } from "react-native-elements";
+import { Entypo, AntDesign } from "@expo/vector-icons";
 import {
   View,
   TextInput,
@@ -18,16 +21,19 @@ const { width, height } = Dimensions.get("window");
 const { width: WIDTH } = Dimensions.get("window");
 
 const Compras = ({ navigation, route }) => {
-
   const { AnalyzerId, OptionId } = route.params;
   const [objOption, setobjOption] = useState([]);
+
+  const { storedCredentials, setstoredCredentials } =
+    useContext(credentialsContext);
+  const { BusinessPartnerId, BusinessPartner } = storedCredentials;
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-    fetch("http://119.8.144.182:1035/api/businesspartnercustomerproducts", {
+    fetch("http://119.8.144.182:1035/api/businesspartneroptions", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -52,10 +58,15 @@ const Compras = ({ navigation, route }) => {
       });
   };
 
-
   const Item = ({
-    ProductoId,
-    Descripcion,
+    ProductSaleId,
+    BusinessPartnersId,
+    AnalyzerId,
+    FechaSol,
+    NroOrden,
+    Comentario,
+    Atendido,
+    EstadoColor,
   }) => {
     return (
       <SafeAreaView>
@@ -68,7 +79,7 @@ const Compras = ({ navigation, route }) => {
             }}
           >
             <View style={{ flexDirection: "row" }}>
-              <Text style={styles.textTitle}>Producto</Text>
+              <Text style={styles.textTitle}>Fecha</Text>
 
               <Text
                 style={{
@@ -76,31 +87,55 @@ const Compras = ({ navigation, route }) => {
                   textTransform: "uppercase",
                 }}
               >
-                <TouchableOpacity
-                  style={{
-                    marginLeft: 15,
-                    borderRadius: 10,
-                    width: WIDTH - 30,
+                {FechaSol}
+              </Text>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.textTitle}>Nro. Orden</Text>
 
-                    alignItems: "center",
-                    backgroundColor: "green",
-                    padding: 10,
+              <Text
+                style={{
+                  color: "black",
+                  textTransform: "uppercase",
+                }}
+              >
+                {NroOrden}
+              </Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.textTitle}>Atendido</Text>
+
+              <Text
+                style={{
+                  color: "black",
+                  textTransform: "uppercase",
+                }}
+              >
+                {Atendido ? "Si" : "No"}
+              </Text>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.textTitle}>Estado</Text>
+
+              <Text
+                style={{
+                  color: "black",
+                  textTransform: "uppercase",
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: EstadoColor,
+                    position: "absolute",
+                    // bottom: width * 0.27,
+                    left: width * 0.75,
+                    padding: 4,
+                    height: 20,
+                    width: 20,
+                    borderRadius: 10,
                   }}
-                  onPress={() => {
-                    navigation.navigate("CompraProducto", {
-                      ProductSaleId: ProductoId,
-                    });
-                  }}
-                >
-                  <Text style={styles.description}>{Descripcion} </Text>
-                  {/* <AntDesign
-                    name="right"
-                    size={20}
-                    color="white"
-                    style={{ position: "absolute", top: 15, right: 30 }}
-                  />
-                  <Text style={{ color: "white", fontSize: 16 }}>Genere su cita</Text> */}
-                </TouchableOpacity>
+                ></View>
               </Text>
             </View>
           </Card>
@@ -112,8 +147,33 @@ const Compras = ({ navigation, route }) => {
   return (
     <View style={{ backgroundColor: "#000", flex: 1, paddingTop: 90 }}>
       <StatusBar style="light" />
+      <TouchableOpacity
+        style={{
+          marginLeft: 15,
+          borderRadius: 10,
+          width: WIDTH - 30,
+
+          alignItems: "center",
+          backgroundColor: "green",
+          padding: 10,
+        }}
+        onPress={() => {
+          navigation.navigate("CompraProducto", {
+            AnalyzerId: AnalyzerId,
+            OptionId: OptionId,
+          });
+        }}
+      >
+        <Text style={styles.description}>Generar una nueva compra</Text>
+        <AntDesign
+          name="right"
+          size={20}
+          color="white"
+          style={{ position: "absolute", top: 15, right: 30 }}
+        />
+      </TouchableOpacity>
       <Animated.FlatList
-        keyExtractor={(item) => item.SchedulerId.toString()}
+        keyExtractor={(item) => item.ProductSaleId.toString()}
         ListEmptyComponent={() => (
           <View style={{ alignItems: "center", justifyContent: "center" }}>
             <Text>Not found</Text>
@@ -122,10 +182,24 @@ const Compras = ({ navigation, route }) => {
         data={objOption}
         renderItem={({ item }) => {
           return (
-            <Item
-              ProductoId={item.ProductoId}
-              Descripcion={item.Descripcion}
-            />
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("CompraDetalle", {
+                  ProductSaleId: item.ProductSaleId,
+                });
+              }}
+            >
+              <Item
+                ProductSaleId={item.ProductSaleId}
+                BusinessPartnersId={item.BusinessPartnersId}
+                AnalyzerId={item.AnalyzerId}
+                FechaSol={item.FechaSol}
+                NroOrden={item.NroOrden}
+                Comentario={item.Comentario}
+                Atendido={item.Atendido}
+                EstadoColor={item.EstadoColor}
+              />
+            </TouchableOpacity>
           );
         }}
       />
