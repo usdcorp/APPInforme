@@ -96,7 +96,7 @@ const CompraProducto = ({ navigation,route }) => {
      const onAdd = () => {
        //setCount(2);
       
-       Cantidad = Cantidad+1;
+       Cantidad = Cantidad+ 1;
        setSelectedId(2);
      }
 
