@@ -100,7 +100,7 @@ const CompraProducto = ({ navigation,route }) => {
        setSelectedId(2);
      }
 
-     //Cantidad = Cantidad+1;
+     // Cantidad = Cantidad+1;
 
     // const onAdd = () => {
     //   //const products = [...this.state.objProductos];
