@@ -200,7 +200,7 @@ const Login = ({ navigation }) => {
           {/* <View style={{ flex: 1, height: 1, backgroundColor: "white" }} /> */}
           <View>
             {/* <Text
-              style={{ width: 50, textAlign: "center", color: "white" }}
+              style={ { width: 50, textAlign: "center", color: "white" }}
             ></Text> */}
           </View>
           {/* <View style={{ flex: 1, height: 1, backgroundColor: "white" }} /> */}

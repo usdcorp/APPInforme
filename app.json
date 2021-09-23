@@ -24,11 +24,12 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.app.APPInforme",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      },
-      "package": "appinforme.apk"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
