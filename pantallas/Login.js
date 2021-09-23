@@ -98,7 +98,7 @@ const Login = ({ navigation }) => {
           source={require("../src/images/logob.png")}
         />
       </View>
-      {/* < View
+      {/* <View
         style={{
           marginTop: 70,
 
