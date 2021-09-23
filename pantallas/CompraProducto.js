@@ -14,6 +14,7 @@ import {
   SafeAreaView,
   ScrollView,
   Dimensions,
+  ToastAndroid,
   Keyboard,
 } from "react-native";
 import { credentialsContext } from "../components/Context";
@@ -22,18 +23,25 @@ import { StatusBar } from "expo-status-bar";
 const { width, height } = Dimensions.get("window");
 const { width: WIDTH } = Dimensions.get("window");
 
-const CompraProducto = ({ route }) => {
+
+
+
+const CompraProducto = ({ navigation,route }) => {
   const { storedCredentials, setstoredCredentials } =
     useContext(credentialsContext);
   const { BusinessPartnerId, BusinessPartner } = storedCredentials;
   const { AnalyzerId, OptionId } = route.params;
   const [objProductos, setobjProductos] = useState([]);
   const [count, setCount] = useState(0);
+  const [selectedId, setSelectedId] = useState(0);
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  
+
+  
   const fetchData = async () => {
     fetch("http://119.8.144.182:1035/api/businesspartnercustomerproducts", {
       method: "POST",
@@ -60,14 +68,59 @@ const CompraProducto = ({ route }) => {
       });
   };
 
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "86%",
+          backgroundColor: "#CED0CE",
+          marginLeft: "14%"
+        }}
+      />
+    );
+  };
+
+  const handleToast = (message) => {
+    ToastAndroid.showWithGravity(
+      message,
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM
+    );
+  };
+
+  
+
   const Item = ({ ProductoId, Descripcion, Cantidad }) => {
 
-    const onAdd = () => {
-      setCount(Cantidad + 1)
-    }
+     const onAdd = () => {
+       //setCount(2);
+      
+       Cantidad = Cantidad+1;
+       setSelectedId(2);
+     }
+
+     //Cantidad = Cantidad+1;
+
+    // const onAdd = () => {
+    //   //const products = [...this.state.objProductos];
+    //   //products[index].Cantidad += 1;
+    //   Cantidad = Cantidad+1;
+    //   console.log('canti: ' + Cantidad);
+    //   //setSelectedId(selectedId+1);
+    //  // console.log('setSelect: '+selectedId);
+    //   //this.setState({ products });
+    // }
+
     const onSubtract = () => {
       setCount(Cantidad - 1)
     }
+
+  //   _addQty = (index) => {
+  //     var data = this.state.data;
+  //     data[index].qty = data[index].qty + 1;
+  //     this.setState(data:data);
+  // }
 
     return (
       <SafeAreaView>
@@ -92,7 +145,7 @@ const CompraProducto = ({ route }) => {
               <Text style={{ color: "white" }}>{Descripcion}</Text>
             </View>
             <View style={{ flexDirection: "row", marginLeft: 20 }}>
-              <TouchableOpacity onPress={() => setCount(count - 1)}>
+              <TouchableOpacity onPress={() => setCount(count + 1)}>
                 <AntDesign name="minuscircleo" size={24} color="red" />
               </TouchableOpacity>
               <TextInput
@@ -104,13 +157,19 @@ const CompraProducto = ({ route }) => {
                   color: "rgba(255, 255, 255, 0.9)",
                   textAlign: "center",
                 }}
+                //value={selectedId.toString()}
                 value={count.toString()}
                 placeholder={"00/00/0000"}
                 placeholderTextColor={"rgba(0, 0, 0, 0.5)"}
                 underlineColorAndroid="transparent"
               />
 
-              <TouchableOpacity onPress={() => setCount(count + 1)}>
+              {/* <TouchableOpacity onPress={() => setCount(count + 1)}> */}
+               {/* <TouchableOpacity onPress={() => onAdd(Cantidad)}>  */}
+              {/* <TouchableOpacity onPress={() => handleToast(ProductoId.toString())}> */}
+              {/* <TouchableOpacity onPress={() => setSelectedId(ProductoId)}>  */}
+              <TouchableOpacity onPress={() => onAdd()}> 
+              
                 <AntDesign name="pluscircleo" size={24} color="green" />
               </TouchableOpacity>
             </View>
@@ -125,23 +184,35 @@ const CompraProducto = ({ route }) => {
       <StatusBar style="light" />
 
       <Animated.FlatList
-        keyExtractor={(item) => item.ProductoId.toString()}
+       // keyExtractor={(item) => item.ProductoId.toString()}
+       keyExtractor={({ item }, index) => index.toString()}
         ListEmptyComponent={() => (
           <View style={{ alignItems: "center", justifyContent: "center" }}>
             <Text>Not found</Text>
           </View>
         )}
         data={objProductos}
-        renderItem={({ item }) => {
+       // extraData={this.state}
+      // extraData={selectedId}
+     //extraData={}
+
+     ItemSeparatorComponent={this.renderSeparator}
+        renderItem={({ item,index }) => {
           return (
             <Item
               ProductoId={item.ProductoId}
               Descripcion={item.Descripcion}
-              Cantidad={item.Cantidad}
+               Cantidad={item.Cantidad}
             />
           );
         }}
+
+       
+      // refreshing={this.state.refreshing}
+       
       />
+
+      {/* BOTON DE GENERAR COMPRA */}
       <View style={{ paddingTop: 30, marginLeft: 20, marginBottom: 20 }}>
         <TouchableOpacity
           // onPress={sedParameters}

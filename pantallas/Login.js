@@ -76,7 +76,7 @@ const Login = ({ navigation }) => {
   return (
     <View
       style={{
-        backgroundColor: COLORES.ORANGE,
+        backgroundColor: COLORES.BLACK,
         flex: 1,
       }}
     >
@@ -90,15 +90,15 @@ const Login = ({ navigation }) => {
         <Image
           style={{
             alignItems: "center",
-            width: 220,
-            height: 40,
+             width: 281,
+             height: 285,
             resizeMode: "contain",
             position: "absolute",
           }}
-          source={require("../src/images/alphablanco.png")}
+          source={require("../src/images/logob.png")}
         />
       </View>
-      <View
+      {/* <View
         style={{
           marginTop: 70,
 
@@ -108,20 +108,20 @@ const Login = ({ navigation }) => {
           height: "100%",
           paddingHorizontal: 35,
         }}
-      >
+      > */}
         <View>
           <TextInput
             style={{
               width: WIDTH - 100,
               backgroundColor: COLORES.WHITE,
-              marginTop: 250,
+              marginTop: 350,
               height: 45,
               borderRadius: 10,
               fontSize: 16,
               backgroundColor: "rgba(255, 255, 255, 255)",
               color: "rgba(0, 0, 0, 0.5)",
               textAlign: "center",
-              marginHorizontal: 25,
+              marginHorizontal: 43,
               marginBottom: 12,
             }}
             value={Usuario}
@@ -142,7 +142,7 @@ const Login = ({ navigation }) => {
               backgroundColor: "rgba(255, 255, 255, 255)",
               color: "rgba(0, 0, 0, 0.5)",
               textAlign: "center",
-              marginHorizontal: 25,
+              marginHorizontal: 43,
               marginBottom: 12,
             }}
             value={Password}
@@ -159,13 +159,13 @@ const Login = ({ navigation }) => {
             style={{
               position: "absolute",
               top: 8,
-              right: 37,
+              right: 27,
             }}
           >
             <Ionicons
               name={isSecuryEntry ? "ios-eye-outline" : "ios-eye-off-outline"}
               size={26}
-              color={"rgba(0, 0, 0, 0.5)"}
+              color={"rgba(254, 254, 254, 0.5)"}
             />
           </TouchableOpacity>
         </View>
@@ -173,12 +173,13 @@ const Login = ({ navigation }) => {
           <TouchableOpacity
             style={{
               width: WIDTH - 220,
-              height: 25,
+              height: 30,
               borderRadius: 4,
-              backgroundColor: "#01a859",
+              //backgroundColor: "#01a859",
+              backgroundColor: "#015dec",
               alignSelf: "flex-end",
-              marginTop: 20,
-              marginRight: 5,
+              marginTop: 70,
+              marginRight: 117
             }}
             onPress={signin}
           >
@@ -196,15 +197,15 @@ const Login = ({ navigation }) => {
         <View
           style={{ marginTop: 80, flexDirection: "row", alignItems: "center" }}
         >
-          <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
+          {/* <View style={{ flex: 1, height: 1, backgroundColor: "white" }} /> */}
           <View>
-            <Text
+            {/* <Text
               style={{ width: 50, textAlign: "center", color: "white" }}
-            ></Text>
+            ></Text> */}
           </View>
-          <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
+          {/* <View style={{ flex: 1, height: 1, backgroundColor: "white" }} /> */}
         </View>
-      </View>
+      {/* </View> */}
     </View>
   );
 };
