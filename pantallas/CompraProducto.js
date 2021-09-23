@@ -108,7 +108,7 @@ const CompraProducto = ({ navigation,route }) => {
     //   Cantidad = Cantidad+1;
     //   console.log('canti: ' + Cantidad);
     //   //setSelectedId(selectedId+1);
-    //  // console.log('setSelect: '+selectedId);
+    //  //  console.log('setSelect: '+selectedId);
     //   //this.setState({ products });
     // }
 
